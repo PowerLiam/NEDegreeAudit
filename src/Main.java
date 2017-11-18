@@ -11,7 +11,6 @@ public class Main {
         try {
             Document document = Jsoup.connect("http://google.com").get();
             System.out.println(document.html());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
