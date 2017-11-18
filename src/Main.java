@@ -1,5 +1,3 @@
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import AuditParser.AuditParser;
 
 import java.io.IOException;

@@ -22,8 +22,16 @@ public class AuditParser {
         Element pre = document.getElementsByTag("pre").get(0);
         Elements headerSpans = pre.children();
         for (int ii = 6; ii < headerSpans.size(); ii += 2) {
-            headers.add(headerSpans.get(ii).text());
+            String text = headerSpans.get(ii).text();
+            headers.add(text.substring(3, text.length()));
         }
+        headers.remove(headers.size() - 1);
+        headers.remove(headers.size() - 1);
         return headers;
     }
+
+    public static RequirementSection getRequirementSection(String header) {
+        return null;
+    }
+
 }
