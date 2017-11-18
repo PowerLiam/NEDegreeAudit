@@ -1,17 +1,21 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import AuditParser.AuditParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-/**
- * Created by Chris on 11/18/2017.
- */
 public class Main {
     public static void main(String[] args) {
         try {
-            Document document = Jsoup.connect("http://google.com").get();
-            System.out.println(document.html());
+            AuditParser.setDocument("res/NickAudit.html");
+            ArrayList<String> headers = AuditParser.getHeaders();
+            for (String header : headers) {
+                System.out.println(header);
+            }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
