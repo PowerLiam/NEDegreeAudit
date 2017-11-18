@@ -1,5 +1,6 @@
-import jdk.nashorn.internal.parser.JSONParser;
-import netscape.javascript.JSObject;
+
+import AuditParser.Audit;
+import org.jsoup.nodes.Document;
 
 import java.awt.*;
 
@@ -13,11 +14,10 @@ public class ImageBuilder {
     public static Image UniReqs;
     public static Image PrintView;
     private static Graphics2D draw;
-    private static JSObject json;
-    private static JSONParser parse_json;
+    private static Audit audit;
 
-    public void setJson(JSObject j){
-        json = j;
+    public void setDoc(Audit d){
+        audit = d;
     }
 
 }
