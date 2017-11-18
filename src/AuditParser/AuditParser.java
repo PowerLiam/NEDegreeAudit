@@ -29,6 +29,7 @@ public class AuditParser {
             String text = headerSpans.get(ii).text();
             headers.add(text.substring(3, text.length()));
         }
+
         headers.remove(headers.size() - 1);
         headers.remove(headers.size() - 1);
         return headers;
@@ -80,10 +81,10 @@ public class AuditParser {
     }
 
 
-    public static StudentInfo getStudentInfo() throws Exception {
-        if (document == null) throw new Exception();
+    public StudentInfo getStudentInfo() throws Exception {
+        if (this.document == null) throw new Exception();
         ArrayList<String> headers = new ArrayList();
-        Element pre = document.getElementsByTag("pre").get(0);
+        Element pre = this.document.getElementsByTag("pre").get(0);
         Elements headerSpans = pre.children();
         //Get the headers.
         for (int ii = 0; ii < 6; ii ++) {

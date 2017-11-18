@@ -13,9 +13,7 @@ public class Main {
             parser.setDocument("res/NickAudit.html");
             ArrayList<String> headers = parser.getHeaders();
             Audit myAudit = new Audit();
-            AuditParser.setDocument("res/NickAudit.html");
-            ArrayList<String> headers = AuditParser.getHeaders();
-            myAudit.info = AuditParser.getStudentInfo();
+            myAudit.info = parser.getStudentInfo();
             System.out.println(myAudit.info);
             for (String header : headers) {
                 System.out.println(header);
