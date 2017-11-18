@@ -16,6 +16,7 @@ public class Main {
             for (String header : headers) {
                 System.out.println(header);
             }
+            
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();
             ImageViewer checkImage = new ImageViewer(ImageBuilder.StudentInfo);
