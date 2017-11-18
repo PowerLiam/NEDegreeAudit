@@ -53,7 +53,7 @@ public class AuditParser {
         String program_code = headers.get(2).split(" ")[2];
         String cat_year = UTILS.remove(headers.get(2).split(" "), "")[5];;
         String degree = headers.get(3);
-        String focus = headers.get(4).split(" ")[0];
+        String focus = headers.get(4).split(" - ")[0];
         String focus_type = headers.get(4).split(" ")[3];
         return new StudentInfo(NUID, first_name, last_name, grad_date, program_code, cat_year, degree, focus, focus_type);
     }
