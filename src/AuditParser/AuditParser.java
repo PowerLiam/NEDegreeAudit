@@ -133,14 +133,18 @@ public class AuditParser {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().equals("GENERAL ELECTIVES"));
         //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling());
-        return new RequirementSection("", "", 0, parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling()), new ArrayList<String>());
+        RequirementSection req = new RequirementSection("", "", 0, parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling()), new ArrayList<String>());
+        req.setTitle("General Electives");
+        return req;
     }
 
     public RequirementSection getRequiredGeneralElectives() {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().contains("REQUIRED GENERAL ELECTIVES"));
         //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling());
-        return parseHeader(previewTexts.get(1)).getRequirements().get(0);
+        RequirementSection req = parseHeader(previewTexts.get(1)).getRequirements().get(0);
+        req.setTitle("Required General Electives");
+        return req;
     }
 
     private Course parseCourse(String text) {
