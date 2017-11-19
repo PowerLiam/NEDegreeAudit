@@ -119,7 +119,7 @@ public class AuditParser {
         if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
         } else {
-            return -1;
+            return 0;
         }
     }
 
