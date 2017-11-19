@@ -58,6 +58,26 @@ public class AuditParser {
         return headers;
     }
 
+    public ArrayList<Header> getUniversityRequirementss() {
+        String[] names = {
+                "NATURAL and DESIGNED WORLD (ND)",
+                "CREATIVE EXPRESSION/INNOVATION (EI)",
+                "INTERPRETING CULTURE (IC)",
+                "FORMAL and QUANTITATIVE REASONING (FQ)",
+                "SOCIETIES and INSTITUTIONS (SI)",
+                "ANALYZING/USING DATA (AD)",
+                "DIFFERENCE and DIVERSITY (DD)",
+                "ETHICAL REASONING (ER)",
+                "FIRST YEAR WRITING (WF)",
+                "WRITING INTENSIVE (WI)",
+                "ADVANCED WRITING IN THE DISCIPLINES (WD)",
+                "INTEGRATION EXPERIENCE (EX)",
+                "CAPSTONE EXPERIENCE (CE)",
+        };
+
+        return null;
+    }
+
     private Header parseHeader(Element headerRoot) {
         String headerText = headerRoot.textNodes().get(0).getWholeText();
         ArrayList<RequirementSection> reqs = new ArrayList<>();
@@ -137,6 +157,14 @@ public class AuditParser {
         return courses;
     }
 
+    private int parseNumRequired(Element parent) {
+        Elements children = parent.children();
+        children.removeIf((element) -> !element.text().contains("Complete"));
+        if (children.size() > 0) {
+            return getNumberInParens(children.get(0).text());
+        } else return 0;
+    }
+
 
     public RequirementSection getRequirementSection(Element headerElem) {
         String headerText = headerElem.textNodes().get(0).getWholeText();
@@ -148,8 +176,8 @@ public class AuditParser {
         // "IP-     COMPUTER SCIENCE FUNDAMENTAL COURSES                     "
         return new RequirementSection(
                 title, // title of section, if there is one
-                headerText.substring(0, 3).trim(), // status
-                0, // number required
+                headerText.substring(0, 3).trim(),
+                parseNumRequired(headerElem.parent().parent()), // number required
                 parseRegisteredCourses(headerElem.parent().parent()), // registered courses
                 new ArrayList()); // TODO: options to fulfill requirements
     }

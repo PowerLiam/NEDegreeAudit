@@ -142,7 +142,7 @@ public class ImageBuilder {
 
     public static void drawSummary() {
         ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
-        register.add(new RequirementSection("", "", 0, audit.myParser.getRegisteredCourses(), new ArrayList<String>(1)));
+        register.add(audit.myParser.getRegisteredCourses());
         Header registered = new Header("Registered Courses", "IP", register);
         Image rendered = renderHeader(registered);
         //get total height
@@ -322,7 +322,7 @@ public class ImageBuilder {
 
     public static void drawElectives () throws Exception {
         ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
-        elect.add(new RequirementSection("General Electives", "", 0, audit.myParser.getGeneralElectives(), new ArrayList<String>(1)));
+        elect.add(audit.myParser.getGeneralElectives());
         Header electives = new Header("General Electives", "IP", elect);
         Image rendered = renderHeader(electives);
         //get total height
@@ -338,7 +338,6 @@ public class ImageBuilder {
         cur.drawImage(StudentInfo, 0, 0, null);
         cur.drawImage(currentTabState, 0, 450, null);
         cur.drawImage(rendered, 0, 550, null);
-
     }
 
     public static void drawUniReqs(){
