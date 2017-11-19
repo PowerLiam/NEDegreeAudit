@@ -21,15 +21,7 @@ public class ImageBuilder {
     public static Image currentTabState = new BufferedImage(2300, 100, BufferedImage.TYPE_INT_BGR);
     private static Graphics2D draw;
     private static Audit audit;
-    private static Dimension ScreenHeight = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double height = ScreenHeight.getHeight();
-    private static double width = ScreenHeight.getWidth();
 
-
-    //temporary
-    private static Dimension MyScreenHeight = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double myheight = MyScreenHeight.getHeight();
-    private static double mywidth = MyScreenHeight.getWidth();
 
     public static void setAudit(Audit a) {
         audit = a;
