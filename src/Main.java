@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import AuditParser.Audit;
 import Gui.ImageViewer;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
+
 public class Main {
     public static void main(String[] args) {
         try {
@@ -17,6 +19,9 @@ public class Main {
             Audit myAudit = new Audit();
             myAudit.info = parser.getStudentInfo();
             System.out.println(myAudit.info);
+
+            int totalhours[] = parser.getTotalHours();
+            System.out.println("Total Hours: " + totalhours[0] + " / " + totalhours[1]);
             /*for (String header : headers) {
                 System.out.println(header);
             }*/
