@@ -128,7 +128,7 @@ public class AuditParser {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().contains("REQUIRED GENERAL ELECTIVES"));
         //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling());
-        return getRequirementSection(previewTexts.get(1).parent().nextElementSibling().children().get(0).children().get(0));
+        return parseHeader(previewTexts.get(1)).getRequirements().get(0);
     }
 
     private Course parseCourse(String text) {
