@@ -31,8 +31,10 @@ public class Main {
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();
             ImageBuilder.drawSummary();
+            ImageBuilder.drawMajor();
+            ImageBuilder.drawElectives();
             System.out.println(ImageBuilder.Summary.getHeight(null));
-            ImageViewer checkImage = new ImageViewer(ImageBuilder.Summary);
+            ImageViewer checkImage = new ImageViewer(ImageBuilder.Elective);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
