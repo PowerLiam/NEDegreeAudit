@@ -314,11 +314,7 @@ public class ImageBuilder {
                 offset += 100;
             }
             g.setFont(new Font("Serif", Font.BOLD, 50));
-            for(String c : r.getCourseOptions()){
-                g.drawString(c, 30, offset + 50);
-                System.out.println("STRINGS: "+ c);
-                offset += 50;
-            }
+            g.drawString(r.getCourseOptions(), 30, offset + 50);
             offset += 80;
         }
         return header;
