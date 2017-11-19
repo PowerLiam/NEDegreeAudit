@@ -7,13 +7,13 @@ public class RequirementSection {
     private String status; // "IP-" "IP+" "-" or "+"
     private int numRequired;
     private ArrayList<Course> registeredCourses; // courses you have already taken or are registered for
-    private ArrayList<String> courseOptions; // potential course numbers you could take
+    private String courseOptions; // potential course numbers you could take
 
     public RequirementSection(String header,
             String status,
             int numRequired,
             ArrayList<Course> registeredCourses,
-            ArrayList<String> courseOptions) {
+            String courseOptions) {
         this.title = header;
         this.status = status;
         this.numRequired = numRequired;
@@ -37,7 +37,7 @@ public class RequirementSection {
         return registeredCourses;
     }
 
-    public ArrayList<String> getCourseOptions() {
+    public String getCourseOptions() {
         return courseOptions;
     }
 

@@ -135,7 +135,7 @@ public class AuditParser {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().equals("GENERAL ELECTIVES"));
         //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling());
-        RequirementSection req = new RequirementSection("", "", 0, parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling()), new ArrayList<String>());
+        RequirementSection req = new RequirementSection("", "", 0, parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling()), "");
         req.setTitle("General Electives");
         return req;
     }
@@ -186,6 +186,18 @@ public class AuditParser {
         } else return 0;
     }
 
+    private String parseCourseOptions(Element parent) {
+        String result = "";
+        Elements children = parent.children();
+        children.removeIf((element) -> element.text().contains("ADVISOR USE"));
+        boolean startWriting = false;
+        for (Element elem : parent.children()) {
+            if (elem.text().contains("NOT FROM") || elem.text().contains("COURSE LIST")) startWriting = true;
+            if (startWriting) result += elem.text();
+        }
+        return result;
+    }
+
 
     public RequirementSection getRequirementSection(Element headerElem) {
         String headerText = headerElem.textNodes().get(0).getWholeText();
@@ -200,7 +212,7 @@ public class AuditParser {
                 headerText.substring(0, 3).trim(),
                 parseNumRequired(headerElem.parent().parent()), // number required
                 parseRegisteredCourses(headerElem.parent().parent()), // registered courses
-                new ArrayList()); // TODO: options to fulfill requirements
+                parseCourseOptions(headerElem.parent().parent())); // TODO: options to fulfill requirements
     }
 
     public int[] getTotalHours() {
