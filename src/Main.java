@@ -32,9 +32,10 @@ public class Main {
             ImageBuilder.drawStuInfo();
             ImageBuilder.drawSummary();
             ImageBuilder.drawMajor();
+            ImageBuilder.drawUniReqs();
             ImageBuilder.drawElectives();
             System.out.println(ImageBuilder.Summary.getHeight(null));
-            ImageViewer checkImage = new ImageViewer(ImageBuilder.getPrintedImage());
+            ImageViewer checkImage = new ImageViewer(ImageBuilder.UniReqs);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

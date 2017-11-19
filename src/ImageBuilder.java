@@ -128,7 +128,7 @@ public class ImageBuilder {
                 break;
             case 3:
                 cur.setColor(Color.RED);
-                cur.drawString(" Summary", 2100 / 4 * 1, 85);
+                cur.drawString(" Summary", 0, 85);
                 cur.drawString(" Major", 2100 / 4 * 1, 85);
                 cur.drawString(" Electives", 2100 / 4 * 2, 85);
                 cur.drawRect(5, 3, 2100 / 4 * 1 - 5, 94);
@@ -351,8 +351,15 @@ public class ImageBuilder {
 
     public static void drawUniReqs(){
         Graphics2D cur = (Graphics2D) UniReqs.getGraphics();
-        cur.setColor(new Color(200, 41, 193));
-        cur.fillRect(0, 0, 2000, 2000);
+        Header h = audit.myParser.getUniversityRequirements();
+        Image rendered = renderHeader(h);
+        cur.setColor(Color.LIGHT_GRAY);
+        cur.fillRect(0, 0, 2100, 550 + rendered.getHeight(null));
+        drawTabs(3);
+        drawStuInfo();
+        cur.drawImage(StudentInfo, 0, 0, null);
+        cur.drawImage(currentTabState, 0, 450, null);
+        cur.drawImage(rendered, 0, 550, null);
     }
 
     public static Image getPrintedImage() throws Exception {
