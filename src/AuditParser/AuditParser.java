@@ -3,11 +3,13 @@ package AuditParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,17 +23,62 @@ public class AuditParser {
         document = Jsoup.parse(new File(path), "UTF-8");
     }
 
-    public ArrayList<String> getHeaders() throws Exception {
+    private boolean isHeaderText(String text) {
+        String sub = text.substring(0, 3);
+        return (sub.equals("  -") || sub.equals("  +") || sub.equals("IP-") || sub.equals("IP+"));
+    }
+    public ArrayList<Header> getHeaders() throws Exception {
         if (document == null) throw new Exception();
-        ArrayList<String> headers = new ArrayList();
+        ArrayList<Header> headers = new ArrayList<>();
         Element pre = document.getElementsByTag("pre").get(0);
         Elements headerElems = pre.children();
+        headerElems.removeIf((element) -> !element.className().equals("auditPreviewText"));
+        headerElems.removeIf((element) -> (element.text().contains("ADDITIONAL COURSE INFORMATION")
+                || element.text().contains("MAJOR GPA REQUIREMENT")
+                || element.text().contains("REQUIRED GENERAL ELECTIVES")
+                || element.text().contains("NUpath")));
+        headerElems.removeIf((element) -> (element.textNodes().size() != 0));
         //Get the header names
-        for (int ii = 6; ii < headerElems.size(); ii += 2) {
-            String headerName = headerElems.get(ii).textNodes().get(0).getWholeText();
+        for (int ii = 0; ii < headerElems.size(); ii++) {
+            // get header name
+            String headerName = headerElems.get(ii).children().get(0).textNodes().get(0).getWholeText();
+            Elements previewTexts = document.getElementsByClass("auditPreviewText");
+            previewTexts.removeIf((element) -> {
+                List<TextNode> nodes = element.textNodes();
+                if (nodes.size() == 0) return true;
+                else {
+                    return !nodes.get(0).getWholeText().equals(headerName);
+                }
+            });
+            Element headerRoot = previewTexts.get(1);
+            System.out.println("Parsing the header: " + headerRoot.ownText());
+            headers.add(parseHeader(headerRoot));
         }
 
         return headers;
+    }
+
+    private Header parseHeader(Element headerRoot) {
+        String headerText = headerRoot.textNodes().get(0).getWholeText();
+        ArrayList<RequirementSection> reqs = new ArrayList<>();
+        Element current = headerRoot.parent().nextElementSibling();
+        while (current.tagName().equals("p")) {
+            System.out.println("The tag name of current is: " + current.tagName());
+            if (current.children().size() > 0) {
+                Element headerElem = current.children().get(0).children().get(0);
+                if (isHeaderText(headerElem.textNodes().get(0).getWholeText())) {
+                    System.out.println("Getting requirement section of " + headerElem.ownText());
+                    reqs.add(getRequirementSection(headerElem));
+                }
+            }
+            current = current.nextElementSibling();
+        }
+        Header header = new Header(
+                headerText.substring(0, 3).trim(),
+                headerText.substring(7, headerText.length()),
+                reqs
+        );
+        return header;
     }
 
     public int getNumberInParens(String text) {
@@ -74,6 +121,7 @@ public class AuditParser {
         children.removeIf((element) -> element.text().contains("Course List")); // remove the trash that contains "Course List"
         children.removeIf((element) -> element.text().contains("ADVISOR USE")); // remove "ADVISOR USE"
         children.removeIf((element) -> element.text().contains("NEEDS")); // remove "NEEDS"
+        children.removeIf((element) -> (element.children().size() > 0)); // remove nodes w/ more than one child
         ArrayList<Course> courses = new ArrayList();
         for (Element element : children) {
             courses.add(parseCourse(element.textNodes().get(0).getWholeText()));
@@ -81,15 +129,16 @@ public class AuditParser {
         return courses;
     }
 
-    public RequirementSection getRequirementSection(String header) {
-        Elements previewTexts = document.getElementsByClass("auditPreviewText");
-        previewTexts.removeIf((element) -> !element.ownText().contains(header));
-        Element headerElem = previewTexts.get(0);
+    public RequirementSection getRequirementSection(Element headerElem) {
         String headerText = headerElem.textNodes().get(0).getWholeText();
-        System.out.println("Header text: " + headerText + " or " + headerElem.text());
+        String title = "";
+        if (headerText.toUpperCase().equals(headerText)) {
+            // is a proper title
+            title = headerText.substring(8, headerText.length()).trim();
+        }
         // "IP-     COMPUTER SCIENCE FUNDAMENTAL COURSES                     "
         return new RequirementSection(
-                headerText.substring(8, headerText.length()).trim(), // header
+                title, // title of section, if there is one
                 headerText.substring(0, 3).trim(), // status
                 0, // number required
                 parseRegisteredCourses(headerElem.parent().parent()), // registered courses

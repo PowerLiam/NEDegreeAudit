@@ -11,7 +11,9 @@ public class Main {
         try {
             AuditParser parser = new AuditParser();
             parser.setDocument("res/NickAudit.html");
-            //ArrayList<String> headers = parser.getHeaders();
+            System.out.println("Headers");
+            parser.getHeaders();
+            //System.out.println("Headers end");
             Audit myAudit = new Audit();
             myAudit.info = parser.getStudentInfo();
             System.out.println(myAudit.info);
@@ -20,10 +22,10 @@ public class Main {
             }*/
             //RequirementSection req = parser.getRequirementSection("COMPUTER SCIENCE FUNDAMENTAL COURSES");
             //System.out.println(req.toString());
-            System.out.println("Registered Courses");
+            /*System.out.println("Registered Courses");
             System.out.println(parser.getRegisteredCourses().toString());
             System.out.println("General Electives");
-            System.out.println(parser.getGeneralElectives().toString());
+            System.out.println(parser.getGeneralElectives().toString());*/
             //System.out.println(parser.getNumberInParens("Complete the following (10) courses:"));
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();

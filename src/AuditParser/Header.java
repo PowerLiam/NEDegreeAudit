@@ -8,7 +8,7 @@ public class Header {
     private String status;
     private ArrayList<RequirementSection> requirements;
 
-    public Header(String name, String status) {
+    public Header(String name, String status, ArrayList<RequirementSection> requirements) {
         this.name = name;
         this.status = status;
         this.requirements = requirements;
