@@ -178,7 +178,7 @@ public class ImageBuilder {
         major.setColor(Color.blue);
         major.setStroke(new BasicStroke(5));
         major.drawRect(0, 0, 1200, 50);
-        major.fillRect(0, 0, 1200 / majorpair[0] * majorpair[1], 50);
+        major.fillRect(0, 0, 1200 / majorpair[1] * majorpair[0], 50);
         //                                 total  part
         Image required_electives_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);
         Graphics2D electives = (Graphics2D) required_electives_bar.getGraphics();
@@ -212,7 +212,7 @@ public class ImageBuilder {
         cur.setFont(myFont);
         cur.drawString(" Major Requirements:", 0, 700);
         cur.drawImage(major_bar, 100, 750,null);
-        cur.drawString( "(" + majorpair[1] + "/" + majorpair[0] + ")", 1400, 775);
+        cur.drawString( "(" + majorpair[0] + "/" + majorpair[1] + ")", 1400, 775);
         //                      part        total
 
         cur.drawString(" Required General Electives:", 0, 900);
