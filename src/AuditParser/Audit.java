@@ -7,5 +7,7 @@ import java.util.ArrayList;
  */
 public class Audit {
     public StudentInfo info;
-    public ArrayList<RequirementSection> reqs;
+    public AuditParser myParser;
+
+
 }

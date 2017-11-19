@@ -1,6 +1,9 @@
 
 import AuditParser.Audit;
+import AuditParser.AuditParser;
 import AuditParser.Course;
+import AuditParser.Header;
+import AuditParser.RequirementSection;
 import org.jsoup.nodes.Document;
 
 import java.awt.*;
@@ -9,12 +12,13 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by Chris on 11/18/2017.
  */
 public class ImageBuilder {
-    public static Image Summary = new BufferedImage(2100, 2000, BufferedImage.TYPE_INT_BGR);
+    public static Image Summary = new BufferedImage(2100, 10000, BufferedImage.TYPE_INT_BGR);
     public static Image Major = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
     public static Image Elective = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
     public static Image UniReqs = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
@@ -23,7 +27,14 @@ public class ImageBuilder {
     public static Image currentTabState = new BufferedImage(2100, 100, BufferedImage.TYPE_INT_BGR);
     private static Graphics2D draw;
     private static Audit audit;
+    private static Dimension ScreenHeight = Toolkit.getDefaultToolkit().getScreenSize();
+    private static double height = ScreenHeight.getHeight();
+    private static double width = ScreenHeight.getWidth();
 
+    //temporary
+    private static Dimension MyScreenHeight = Toolkit.getDefaultToolkit().getScreenSize();
+    private static double myheight = MyScreenHeight.getHeight();
+    private static double mywidth = MyScreenHeight.getWidth();
 
     public static void setAudit(Audit a) {
         audit = a;
@@ -151,7 +162,6 @@ public class ImageBuilder {
         major.setColor(Color.blue);
         major.fillRect(0, 0, 1200 / 14 * 9, 50);
         //                                 total  part
-
         Image required_electives_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);
         Graphics2D electives = (Graphics2D) required_electives_bar.getGraphics();
         electives.setColor(Color.gray);
@@ -192,7 +202,11 @@ public class ImageBuilder {
 
 
         //registered courses: starting height 1150
-
+        ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
+        register.add(new RequirementSection("", "", 0, audit.myParser.getRegisteredCourses(), new ArrayList<String>(1)));
+        Header registered = new Header("Registered Courses", "IP", register);
+        Image rendered = renderHeader(registered);
+        cur.drawImage(rendered, 0, 1250, null);
     }
     // All COURSE OBJECTS HAVE BEEN STARTED
     // Progress
@@ -209,18 +223,76 @@ public class ImageBuilder {
     // NT: Unacceptable T grade
     // T: Transferred
 
-    public Image renderCourse(Course c){ //height = 100
-        Image course = new BufferedImage(700, 100, BufferedImage.TYPE_INT_BGR);
+    public static Image renderCourse(Course c){ //height = 100
+        Image course = new BufferedImage(2000, 100, BufferedImage.TYPE_INT_BGR);
         Graphics2D g = (Graphics2D)course.getGraphics();
-        g.setFont(new Font("Serif", Font.BOLD, 90));
-        if(c.getProgress().equals("IP")) g.setColor(Color.RED);
-        else g.setColor(Color.GREEN);
-        g.drawString(c.getDepartment() + "-" + c.getCourseno() + ": " + c.getName() + "        " + c.getCredits() + "    " + c.getRegistration(), 100, 95);
+        g.setFont(new Font("Serif", Font.BOLD, 75));
+        g.setColor(Color.gray);
+        g.fillRect(0, 0, 2000, 100);
+        g.setStroke(new BasicStroke( 10));
+        if(c.getProgress().equals("IP")) g.setColor(new Color(160, 0, 0));
+        else g.setColor(new Color(62, 183, 72));
+        g.drawRect(0, 0, 2000, 100);
+        g.drawString(c.getDepartment() + "-" + c.getCourseno() + ": " + c.getName() + "        " + c.getCredits() + "    " + c.getRegistration(), 100, 75);
         return course;
     }
 
-    /*public Image renderHeader(Header h){
+    public static Image renderHeader(Header h){
+        int sum = 0;
+        for(RequirementSection r : h.getRequirements()){
+            sum += 50; //title
+            sum += 100 * r.getRegisteredCourses().size();
+            sum += 50 * r.getCourseOptions().size();
+            sum += 50; // spacing btw next section
+        }
+        sum += 90; //title of header
 
-    }*/
+        Image header = new BufferedImage(2200, sum, BufferedImage.TYPE_INT_BGR);
+        Graphics2D g = (Graphics2D) header.getGraphics();
+        g.setColor(Color.lightGray);
+        g.fillRect(0, 0, 2200, sum);
+
+        if(h.getStatus().equals("")) g.setColor(new Color(200, 129, 39));
+        if(h.getStatus().equals("IP")) g.setColor(new Color(200, 129, 39));
+        if(h.getStatus().equals("NO")) g.setColor(new Color(160, 0, 0));
+        if(h.getStatus().equals("OK")) g.setColor(new Color(62, 183, 72));
+
+
+
+        g.setFont(new Font("Serif", Font.BOLD, 90));
+        g.drawString(h.getName(), 10, 90);
+        g.setFont(new Font("Serif", Font.BOLD, 50));
+        int offset = 100;
+        for(RequirementSection r : h.getRequirements()){
+            g.drawString(r.getTitle() + "  Status: " + r.getStatus(), 30, offset + 50);
+            offset += 60;
+            for(Course c : r.getRegisteredCourses()){
+                g.drawImage(renderCourse(c), 30, offset, null);
+                offset += 100;
+            }
+            g.setFont(new Font("Serif", Font.BOLD, 50));
+            for(String c : r.getCourseOptions()){
+                g.drawString(c, 30, offset + 50);
+                offset += 50;
+            }
+            offset += 50;
+        }
+        return header;
+    }
+
+    public static void drawMajor(){
+        Graphics2D cur = (Graphics2D) Major.getGraphics();
+
+    }
+
+    public static void drawElectives(){
+        Graphics2D cur = (Graphics2D) Elective.getGraphics();
+
+    }
+
+    public static void drawUniReqs(){
+        Graphics2D cur = (Graphics2D) UniReqs.getGraphics();
+
+    }
 
 }

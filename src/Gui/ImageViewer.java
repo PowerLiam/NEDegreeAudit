@@ -9,13 +9,18 @@ import java.awt.*;
  */
 public class ImageViewer extends JFrame {
     ImagePanel view;
+    JScrollPane main;
     public ImageViewer(Image i){
         super();
         view = new ImagePanel(i);
-        this.add(view);
+        main = new JScrollPane(view);
+        main.setPreferredSize(new Dimension(2200, 2000));
+        main.setVerticalScrollBar(main.getVerticalScrollBar());
+        this.add(main);
         this.setVisible(true);
         this.setSize(2200, 2000);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
 
 
