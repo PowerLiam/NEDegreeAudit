@@ -34,7 +34,7 @@ public class Main {
             ImageBuilder.drawMajor();
             ImageBuilder.drawElectives();
             System.out.println(ImageBuilder.Summary.getHeight(null));
-            ImageViewer checkImage = new ImageViewer(ImageBuilder.Elective);
+            ImageViewer checkImage = new ImageViewer(ImageBuilder.getPrintedImage());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

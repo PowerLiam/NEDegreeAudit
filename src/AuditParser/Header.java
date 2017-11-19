@@ -18,6 +18,7 @@ public class Header {
     public int[] getPair(){
         int [] ret = new int[2];
         for(RequirementSection r : requirements){
+            if(r.getNumRequired() == 0) continue;
             ret[0] += r.getRegisteredCourses().size();
             ret[1] += r.getNumRequired();
         }

@@ -168,20 +168,18 @@ public class ImageBuilder {
         Graphics2D major = (Graphics2D) major_bar.getGraphics();
         major.setColor(Color.gray);
         major.fillRect(0, 0, 1200, 50);
-        //TODO: GET WIDTH MULTIPLIER FROM AUDIT
         int[] majorpair= new int[2];
         for(Header h : audit.myParser.getHeaders()){
             majorpair[0] += h.getPair()[0];
             majorpair[1] += h.getPair()[1];
         }
         major.setColor(Color.blue);
-        major.fillRect(0, 0, 1200 / majorpair[1] * majorpair[0], 50);
+        major.fillRect(0, 0, 1200 / majorpair[0] * majorpair[1], 50);
         //                                 total  part
         Image required_electives_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);
         Graphics2D electives = (Graphics2D) required_electives_bar.getGraphics();
         electives.setColor(Color.gray);
         electives.fillRect(0, 0, 1200, 50);
-        //TODO: GET WIDTH MULTIPLIER FROM AUDIT
         ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
         elect.add(audit.myParser.getGeneralElectives());
         elect.add(audit.myParser.getRequiredGeneralElectives());
@@ -195,8 +193,8 @@ public class ImageBuilder {
         Graphics2D uni = (Graphics2D) uni_req_bar.getGraphics();
         uni.setColor(Color.gray);
         uni.fillRect(0, 0, 1200, 50);
-        //TODO: GET WIDTH MULTIPLIER FROM AUDIT
         uni.setColor(Color.blue);
+        //TODO FIX
         uni.fillRect(0, 0, 1200 / 14 * 9, 50);
         //                                 total  part
 
@@ -204,15 +202,13 @@ public class ImageBuilder {
         cur.setFont(myFont);
         cur.drawString(" Major Requirements:", 0, 700);
         cur.drawImage(major_bar, 100, 750,null);
-        cur.drawString( "(" + "9" + "/" + "14" + ")", 1400, 775);
+        cur.drawString( "(" + majorpair[1] + "/" + majorpair[0] + ")", 1400, 775);
         //                      part        total
-        //TODO: GET PART AND TOTAL FROM AUDIT
 
         cur.drawString(" Required General Electives:", 0, 900);
         cur.drawImage(required_electives_bar, 100, 950,null);
-        cur.drawString( "(" + "9" + "/" + "14" + ")", 1400, 975);
+        cur.drawString( "(" + electivepair[0] + "/" + electivepair[1] + ")", 1400, 975);
         //                      part        total
-        //TODO: GET PART AND TOTAL FROM AUDIT
 
         cur.drawString(" University Requirements:", 0, 1100);
         cur.drawImage(uni_req_bar, 100, 1150,null);
@@ -247,7 +243,7 @@ public class ImageBuilder {
         g.setColor(Color.gray);
         g.fillRect(0, 0, 2000, 100);
         g.setStroke(new BasicStroke( 10));
-        if(c.getProgress().equals("IP")) g.setColor(new Color(160, 0, 0));
+        if(c.getProgress().equals("IP")) g.setColor(new Color(209, 128, 19));
         else g.setColor(new Color(62, 183, 72));
         g.drawRect(0, 0, 2000, 100);
         g.drawString(c.getDepartment() + "-" + c.getCourseno() + ": " + c.getName() + "        " + c.getCredits() + "    " + c.getRegistration(), 100, 75);
@@ -338,7 +334,7 @@ public class ImageBuilder {
         Header electives = new Header("General Electives", "IP", elect);
         Image rendered = renderHeader(electives);
         //get total height
-        int totalheight = 1250 + rendered.getHeight(null);
+        int totalheight = 550 + rendered.getHeight(null);
         Elective = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
 
 
@@ -355,14 +351,16 @@ public class ImageBuilder {
 
     public static void drawUniReqs(){
         Graphics2D cur = (Graphics2D) UniReqs.getGraphics();
+        cur.setColor(new Color(200, 41, 193));
+        cur.fillRect(0, 0, 2000, 2000);
     }
 
-    public Image getPrintedImage() throws Exception {
+    public static Image getPrintedImage() throws Exception {
         drawSummary();
         drawElectives();
         drawMajor();
         drawUniReqs();
-        Image print = new BufferedImage(2100, Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null) + UniReqs.getHeight(null) , BufferedImage.TYPE_INT_BGR + 800);
+        Image print = new BufferedImage(2100, Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null) + UniReqs.getHeight(null) + 800 , BufferedImage.TYPE_INT_BGR);
         Graphics2D g = (Graphics2D) print.getGraphics();
         g.drawImage(Summary, 0, 0, null);
         g.drawImage(Major, 0, 200 + Summary.getHeight(null), null);
