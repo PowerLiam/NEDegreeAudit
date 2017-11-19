@@ -329,6 +329,7 @@ public class ImageBuilder {
         int totalheight = 1250 + rendered.getHeight(null);
         Elective = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
 
+        
         Graphics2D cur = (Graphics2D) Elective.getGraphics();
         cur.setColor(Color.LIGHT_GRAY);
         cur.fillRect(0, 0, 2100, 2000);
