@@ -36,7 +36,9 @@ public class AuditParser {
         headerElems.removeIf((element) -> (element.text().contains("ADDITIONAL COURSE INFORMATION")
                 || element.text().contains("MAJOR GPA REQUIREMENT")
                 || element.text().contains("REQUIRED GENERAL ELECTIVES")
-                || element.text().contains("NUpath")));
+                || element.text().contains("NUpath")
+                || element.text().contains("CREDIT REQUIREMENTS")
+        ));
         headerElems.removeIf((element) -> (element.textNodes().size() != 0));
         //Get the header names
         for (int ii = 0; ii < headerElems.size(); ii++) {
