@@ -27,6 +27,7 @@ public class Main {
             System.out.println("General Electives");
             System.out.println(parser.getGeneralElectives().toString());*/
             //System.out.println(parser.getNumberInParens("Complete the following (10) courses:"));
+            myAudit.myParser = parser;
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();
             ImageBuilder.drawSummary();

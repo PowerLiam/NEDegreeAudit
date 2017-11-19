@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="NEDegreeAudit:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NEDegreeAudit_jar</output-path>
+    <root id="archive" name="NEDegreeAudit.jar">
+      <element id="module-output" name="NEDegreeAudit" />
+      <element id="extracted-dir" path="C:/Program Files/Jsoup/jsoup-1.11.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
