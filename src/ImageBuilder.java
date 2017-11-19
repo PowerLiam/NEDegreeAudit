@@ -323,13 +323,14 @@ public class ImageBuilder {
     public static void drawElectives () throws Exception {
         ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
         elect.add(audit.myParser.getGeneralElectives());
+        elect.add(audit.myParser.getRequiredGeneralElectives());
         Header electives = new Header("General Electives", "IP", elect);
         Image rendered = renderHeader(electives);
         //get total height
         int totalheight = 1250 + rendered.getHeight(null);
         Elective = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
 
-        
+
         Graphics2D cur = (Graphics2D) Elective.getGraphics();
         cur.setColor(Color.LIGHT_GRAY);
         cur.fillRect(0, 0, 2100, 2000);
@@ -338,11 +339,25 @@ public class ImageBuilder {
         cur.drawImage(StudentInfo, 0, 0, null);
         cur.drawImage(currentTabState, 0, 450, null);
         cur.drawImage(rendered, 0, 550, null);
+
     }
 
     public static void drawUniReqs(){
         Graphics2D cur = (Graphics2D) UniReqs.getGraphics();
+    }
 
+    public Image getPrintedImage() throws Exception {
+        drawSummary();
+        drawElectives();
+        drawMajor();
+        drawUniReqs();
+        Image print = new BufferedImage(2100, Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null) + UniReqs.getHeight(null) , BufferedImage.TYPE_INT_BGR + 800);
+        Graphics2D g = (Graphics2D) print.getGraphics();
+        g.drawImage(Summary, 0, 0, null);
+        g.drawImage(Major, 0, 200 + Summary.getHeight(null), null);
+        g.drawImage(Elective, 0, 400 + Summary.getHeight(null) + Major.getHeight(null), null);
+        g.drawImage(UniReqs, 0, 600 + Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null), null);
+        return print;
     }
 
 }

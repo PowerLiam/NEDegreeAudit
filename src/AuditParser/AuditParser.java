@@ -203,4 +203,5 @@ public class AuditParser {
         String focus_type = headers.get(4).split(" ")[3];
         return new StudentInfo(NUID, first_name, last_name, grad_date, program_code, cat_year, degree, focus, focus_type);
     }
+
 }
