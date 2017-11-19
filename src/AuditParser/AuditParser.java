@@ -74,8 +74,8 @@ public class AuditParser {
             current = current.nextElementSibling();
         }
         Header header = new Header(
-                headerText.substring(0, 3).trim(),
                 headerText.substring(7, headerText.length()),
+                headerText.substring(0, 3).trim(),
                 reqs
         );
         return header;
