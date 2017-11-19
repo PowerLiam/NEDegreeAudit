@@ -197,6 +197,23 @@ public class AuditParser {
                 new ArrayList()); // TODO: options to fulfill requirements
     }
 
+    public int[] getTotalHours() {
+        int array[] = {0, 0};
+        Elements elements = document.getElementsByClass("auditPreviewText");
+        elements.removeIf((element) -> !element.ownText().contains("total semester hours required."));
+        Element totalHoursElement = elements.get(0);
+        Pattern pattern = Pattern.compile("(\\d*)");
+        Matcher matcher = pattern.matcher(totalHoursElement.ownText());
+        if (matcher.find()) {
+            array[1] = Integer.parseInt(matcher.group(1));
+        }
+        matcher = pattern.matcher(totalHoursElement.parent().nextElementSibling().ownText());
+        if (matcher.find()) {
+            array[0] = Integer.parseInt(matcher.group(1));
+        }
+        return array;
+    }
+
 
     public StudentInfo getStudentInfo() throws Exception {
         if (this.document == null) throw new Exception();
