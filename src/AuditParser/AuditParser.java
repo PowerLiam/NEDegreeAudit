@@ -137,6 +137,7 @@ public class AuditParser {
         return courses;
     }
 
+
     public RequirementSection getRequirementSection(Element headerElem) {
         String headerText = headerElem.textNodes().get(0).getWholeText();
         String title = "";
