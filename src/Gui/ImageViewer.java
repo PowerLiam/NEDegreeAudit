@@ -14,11 +14,11 @@ public class ImageViewer extends JFrame {
         super();
         view = new ImagePanel(i);
         main = new JScrollPane(view);
-        main.setPreferredSize(new Dimension(2200, 2000));
+        main.setPreferredSize(new Dimension(2300, 2000));
         main.setVerticalScrollBar(main.getVerticalScrollBar());
         this.add(main);
         this.setVisible(true);
-        this.setSize(2200, 2000);
+        this.setSize(2300, 2000);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
