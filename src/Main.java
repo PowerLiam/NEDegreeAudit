@@ -1,37 +1,26 @@
 import AuditParser.AuditParser;
-import AuditParser.RequirementSection;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import AuditParser.Audit;
 import Gui.ImageViewer;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
+import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
         try {
             AuditParser parser = new AuditParser();
-            parser.setDocument("res/PaulAudit.htm");
-            System.out.println("Headers");
-            parser.getUniversityRequirements();
-            //System.out.println("Headers end");
+            //parser.setDocument("res/PaulAudit.htm");
+            System.out.println("Loading from " + args[0]);
+            System.out.println("Saving to " + args[1]);
+            parser.setDocument(args[0]);
             Audit myAudit = new Audit();
             myAudit.info = parser.getStudentInfo();
             System.out.println(myAudit.info);
 
-            int totalhours[] = parser.getTotalHours();
-            System.out.println("Total Hours: " + totalhours[0] + " / " + totalhours[1]);
-            /*for (String header : headers) {
-                System.out.println(header);
-            }*/
-            //RequirementSection req = parser.getRequirementSection("COMPUTER SCIENCE FUNDAMENTAL COURSES");
-            //System.out.println(req.toString());
-            /*System.out.println("Registered Courses");
-            System.out.println(parser.getRegisteredCourses().toString());
-            System.out.println("General Electives");
-            System.out.println(parser.getGeneralElectives().toString());*/
-            //System.out.println(parser.getNumberInParens("Complete the following (10) courses:"));
             myAudit.myParser = parser;
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();
@@ -40,7 +29,11 @@ public class Main {
             ImageBuilder.drawUniReqs();
             ImageBuilder.drawElectives();
             System.out.println(ImageBuilder.Summary.getHeight(null));
-            ImageViewer checkImage = new ImageViewer(ImageBuilder.getPrintedImage());
+            Image image = ImageBuilder.getPrintedImage();
+
+            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+            bufferedImage.getGraphics().drawImage(image, 0, 0, null);
+            ImageIO.write(bufferedImage, "jpg", new File(args[1]));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

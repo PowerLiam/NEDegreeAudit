@@ -1,16 +1,10 @@
 
 import AuditParser.Audit;
-import AuditParser.AuditParser;
 import AuditParser.Course;
 import AuditParser.Header;
 import AuditParser.RequirementSection;
-import org.jsoup.nodes.Document;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 

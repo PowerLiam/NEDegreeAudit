@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/NEDegreeAudit_jar</output-path>
     <root id="archive" name="NEDegreeAudit.jar">
       <element id="module-output" name="NEDegreeAudit" />
-      <element id="extracted-dir" path="C:/Program Files/Jsoup/jsoup-1.11.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Workspaces/Java Libraries/jsoup-1.10.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
