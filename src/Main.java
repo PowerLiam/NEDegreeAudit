@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             AuditParser parser = new AuditParser();
-            parser.setDocument("res/NickAudit.html");
+            parser.setDocument("res/PaulAudit.htm");
             System.out.println("Headers");
             parser.getUniversityRequirements();
             //System.out.println("Headers end");
