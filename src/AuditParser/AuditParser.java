@@ -82,7 +82,7 @@ public class AuditParser {
         String headerText = headerRoot.textNodes().get(0).getWholeText();
         ArrayList<RequirementSection> reqs = new ArrayList<>();
         Element current = headerRoot.parent().nextElementSibling();
-        while (current.tagName().equals("p")) {
+        while (!current.tagName().equals("hr")) {
             System.out.println("The tag name of current is: " + current.tagName());
             if (current.children().size() > 0) {
                 Element headerElem = current.children().get(0).children().get(0);
