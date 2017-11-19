@@ -8,6 +8,8 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AuditParser {
@@ -23,21 +25,35 @@ public class AuditParser {
         if (document == null) throw new Exception();
         ArrayList<String> headers = new ArrayList();
         Element pre = document.getElementsByTag("pre").get(0);
-        Elements headerSpans = pre.children();
-        //Get the headers.
-        for (int ii = 6; ii < headerSpans.size(); ii += 2) {
-            String text = headerSpans.get(ii).text();
-            headers.add(text.substring(3, text.length()));
+        Elements headerElems = pre.children();
+        //Get the header names
+        for (int ii = 6; ii < headerElems.size(); ii += 2) {
+            String headerName = headerElems.get(ii).textNodes().get(0).getWholeText();
         }
 
-        headers.remove(headers.size() - 1);
-        headers.remove(headers.size() - 1);
         return headers;
     }
 
-    public boolean isHonors() {
+    public int getNumberInParens(String text) {
+        Pattern pattern = Pattern.compile("\\((\\d*)\\)");
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        } else {
+            return -1;
+        }
+    }
 
-        return false;
+    public ArrayList<Course> getRegisteredCourses() {
+        Elements previewTexts = document.getElementsByClass("auditPreviewText");
+        previewTexts.removeIf((element) -> !element.ownText().contains("THE FOLLOWING COURSES ARE CURRENT REGISTERED"));
+        return parseRegisteredCourses(previewTexts.get(0).parent().parent());
+    }
+
+    public ArrayList<Course> getGeneralElectives() {
+        Elements previewTexts = document.getElementsByClass("auditPreviewText");
+        previewTexts.removeIf((element) -> !element.ownText().equals("GENERAL ELECTIVES"));
+        return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling());
     }
 
     private Course parseCourse(String text) {
@@ -45,7 +61,7 @@ public class AuditParser {
         System.out.println("Parsing: " + text);
         return new Course(text.substring(6, 10), // semester
                 text.substring(11, 15).trim(), // department
-                text.substring(15, 19).trim(), // courseno
+                text.substring(15, 23).trim(), // courseno
                 text.substring(24, 28).trim(), // credits
                 text.substring(29, 32).trim(), // registration status
                 text.substring(33, 35).trim(), // progress

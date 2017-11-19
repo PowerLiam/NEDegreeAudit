@@ -1,22 +1,17 @@
-/*
 package AuditParser;
 
+
+import java.util.ArrayList;
 
 public class Header {
     private String name;
     private String status;
+    private ArrayList<RequirementSection> requirements;
 
     public Header(String name, String status) {
         this.name = name;
         this.status = status;
-    }
-
-    public Header(String text) {
-
-    }
-
-    private parseText(String text) {
-
+        this.requirements = requirements;
     }
 
     public String getName() {
@@ -26,6 +21,7 @@ public class Header {
         return status;
     }
 
-    public
+    public ArrayList<RequirementSection> getRequirements() {
+        return requirements;
+    }
 }
-*/
