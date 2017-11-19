@@ -261,6 +261,15 @@ public class ImageBuilder {
         return course;
     }
 
+    private static String decodeStatus(String status) {
+        if (status.equals("IP")) return "In Progress";
+        else if (status.equals("IP+")) return "In Progress Will Finish";
+        else if (status.equals("IP-")) return "In Progress";
+        else if (status.equals("+")) return "Finished";
+        else if (status.equals("-")) return "Not Started";
+        else return status;
+    }
+
     public static Image renderHeader(Header h){
         int sum = 0;
         for(RequirementSection r : h.getRequirements()){
@@ -299,7 +308,7 @@ public class ImageBuilder {
             else g.setColor(new Color(8, 183, 0));
 
             if(r.getStatus().equals("")) g.drawString(r.getTitle(), 20, offset + 50);
-            else g.drawString(r.getTitle() + "  Status: " + r.getStatus(), 30, offset + 50);
+            else g.drawString(r.getTitle() + "  Status: " + decodeStatus(r.getStatus()), 30, offset + 50);
 
             offset += 60;
             for(Course c : r.getRegisteredCourses()){
