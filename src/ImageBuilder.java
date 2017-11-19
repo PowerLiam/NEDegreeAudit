@@ -323,6 +323,7 @@ public class ImageBuilder {
     public static void drawElectives () throws Exception {
         ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
         elect.add(audit.myParser.getGeneralElectives());
+        elect.add(audit.myParser.getRequiredGeneralElectives());
         Header electives = new Header("General Electives", "IP", elect);
         Image rendered = renderHeader(electives);
         //get total height
