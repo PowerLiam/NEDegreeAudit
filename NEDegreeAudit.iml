@@ -7,14 +7,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/Workspaces/Java Libraries/jsoup-1.10.3.jar!/" />
+          <root url="jar://C:/Program Files/Jsoup/jsoup-1.11.1.jar!/" />
         </CLASSES>
-        <JAVADOC>
-          <root url="jar://D:/Workspaces/Java Libraries/jsoup-1.10.3-javadoc.jar!/" />
-        </JAVADOC>
+        <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>

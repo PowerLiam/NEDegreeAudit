@@ -21,9 +21,12 @@ public class Main {
             RequirementSection req = parser.getRequirementSection("COMPUTER SCIENCE FUNDAMENTAL COURSES");
             System.out.println(req.toString());
 
+
             ImageBuilder.setAudit(myAudit);
             ImageBuilder.drawStuInfo();
-            ImageViewer checkImage = new ImageViewer(ImageBuilder.StudentInfo);
+            ImageBuilder.drawSummary();
+            System.out.println(ImageBuilder.Summary.getHeight(null));
+            ImageViewer checkImage = new ImageViewer(ImageBuilder.Summary);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

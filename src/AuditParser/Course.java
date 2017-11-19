@@ -1,5 +1,7 @@
 package AuditParser;
 
+import java.awt.*;
+
 public class Course {
     private String semester;
     private String department; // "      FL17 CS  1800     4.00 RG  IP Discrete Structures (Hon)    "
@@ -65,4 +67,5 @@ public class Course {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }
