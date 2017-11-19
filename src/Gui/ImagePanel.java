@@ -16,7 +16,7 @@ public class ImagePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        this.setPreferredSize(new Dimension(2200, 50000));
+        this.setPreferredSize(new Dimension(2300, 50000));
         g.drawImage(myImage, 0, 0, this);
     }
 }
