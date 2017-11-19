@@ -142,7 +142,7 @@ public class ImageBuilder {
 
     public static void drawSummary() {
         ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
-        register.add(new RequirementSection("", "", 0, audit.myParser.getRegisteredCourses(), new ArrayList<String>(1)));
+        register.add(audit.myParser.getRegisteredCourses());
         Header registered = new Header("Registered Courses", "IP", register);
         Image rendered = renderHeader(registered);
         //get total height
@@ -322,14 +322,14 @@ public class ImageBuilder {
 
     public static void drawElectives () throws Exception {
         ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
-        elect.add(new RequirementSection("General Electives", "", 0, audit.myParser.getGeneralElectives(), new ArrayList<String>(1)));
+        elect.add(audit.myParser.getGeneralElectives());
         Header electives = new Header("General Electives", "IP", elect);
         Image rendered = renderHeader(electives);
         //get total height
         int totalheight = 1250 + rendered.getHeight(null);
         Elective = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
 
-        
+
         Graphics2D cur = (Graphics2D) Elective.getGraphics();
         cur.setColor(Color.LIGHT_GRAY);
         cur.fillRect(0, 0, 2100, 2000);
@@ -343,7 +343,20 @@ public class ImageBuilder {
 
     public static void drawUniReqs(){
         Graphics2D cur = (Graphics2D) UniReqs.getGraphics();
+    }
 
+    public Image getPrintedImage() throws Exception {
+        drawSummary();
+        drawElectives();
+        drawMajor();
+        drawUniReqs();
+        Image print = new BufferedImage(2100, Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null) + UniReqs.getHeight(null) , BufferedImage.TYPE_INT_BGR + 800);
+        Graphics2D g = (Graphics2D) print.getGraphics();
+        g.drawImage(Summary, 0, 0, null);
+        g.drawImage(Major, 0, 200 + Summary.getHeight(null), null);
+        g.drawImage(Elective, 0, 400 + Summary.getHeight(null) + Major.getHeight(null), null);
+        g.drawImage(UniReqs, 0, 600 + Summary.getHeight(null) + Major.getHeight(null) + Elective.getHeight(null), null);
+        return print;
     }
 
 }
