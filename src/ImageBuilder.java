@@ -272,7 +272,7 @@ public class ImageBuilder {
         for(RequirementSection r : h.getRequirements()){
             sum += 50; //title
             sum += 100 * r.getRegisteredCourses().size();
-            sum += 50 * r.getCourseOptions().size();
+            sum += 50;
             sum += 80; // spacing btw next section
         }
         sum += 90; //title of header
