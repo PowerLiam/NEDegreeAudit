@@ -79,7 +79,9 @@ public class AuditParser {
             Elements previewTexts = document.getElementsByClass("auditPreviewText");
             final int index = ii;
             previewTexts.removeIf((element) -> !element.ownText().contains(names[index]));
-            reqs.add(getRequirementSection(previewTexts.get(1).parent().nextElementSibling().children().get(0).children().get(0)));
+            RequirementSection req = getRequirementSection(previewTexts.get(1).parent().nextElementSibling().children().get(0).children().get(0));
+            req.setTitle(names[index]);
+            reqs.add(req);
         }
         return new Header(
                 "University Requirements",
