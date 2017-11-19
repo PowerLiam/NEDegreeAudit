@@ -191,10 +191,11 @@ public class AuditParser {
         Elements children = parent.children();
         children.removeIf((element) -> element.text().contains("ADVISOR USE"));
         boolean startWriting = false;
-        for (Element elem : parent.children()) {
-            if (elem.text().contains("NOT FROM") || elem.text().contains("COURSE LIST")) startWriting = true;
-            if (startWriting) result += elem.text();
+        for (Element elem : children) {
+            if (elem.text().contains("NOT FROM") || elem.text().contains("Course List")) startWriting = true;
+            if (startWriting) result += elem.text() + " ";
         }
+        System.out.println("Course Options: " + result);
         return result;
     }
 

@@ -272,7 +272,7 @@ public class ImageBuilder {
         for(RequirementSection r : h.getRequirements()){
             sum += 50; //title
             sum += 100 * r.getRegisteredCourses().size();
-            sum += 50;
+            sum += 30;
             sum += 80; // spacing btw next section
         }
         sum += 90; //title of header
@@ -313,8 +313,9 @@ public class ImageBuilder {
                 g.drawImage(renderCourse(c), 30, offset, null);
                 offset += 100;
             }
+            g.setFont(new Font("Serif", Font.BOLD, 30));
+            g.drawString(r.getCourseOptions(), 30, offset + 30);
             g.setFont(new Font("Serif", Font.BOLD, 50));
-            g.drawString(r.getCourseOptions(), 30, offset + 50);
             offset += 80;
         }
         return header;
