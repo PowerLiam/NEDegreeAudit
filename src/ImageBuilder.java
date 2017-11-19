@@ -31,6 +31,7 @@ public class ImageBuilder {
     private static double height = ScreenHeight.getHeight();
     private static double width = ScreenHeight.getWidth();
 
+
     //temporary
     private static Dimension MyScreenHeight = Toolkit.getDefaultToolkit().getScreenSize();
     private static double myheight = MyScreenHeight.getHeight();
@@ -140,7 +141,7 @@ public class ImageBuilder {
         }
     } //100 height
 
-    public static void drawSummary() {
+    public static void drawSummary() throws Exception {
         ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
         register.add(audit.myParser.getRegisteredCourses());
         Header registered = new Header("Registered Courses", "IP", register);
@@ -168,16 +169,26 @@ public class ImageBuilder {
         major.setColor(Color.gray);
         major.fillRect(0, 0, 1200, 50);
         //TODO: GET WIDTH MULTIPLIER FROM AUDIT
+        int[] majorpair= new int[2];
+        for(Header h : audit.myParser.getHeaders()){
+            majorpair[0] += h.getPair()[0];
+            majorpair[1] += h.getPair()[1];
+        }
         major.setColor(Color.blue);
-        major.fillRect(0, 0, 1200 / 14 * 9, 50);
+        major.fillRect(0, 0, 1200 / majorpair[1] * majorpair[0], 50);
         //                                 total  part
         Image required_electives_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);
         Graphics2D electives = (Graphics2D) required_electives_bar.getGraphics();
         electives.setColor(Color.gray);
         electives.fillRect(0, 0, 1200, 50);
         //TODO: GET WIDTH MULTIPLIER FROM AUDIT
+        ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
+        elect.add(audit.myParser.getGeneralElectives());
+        elect.add(audit.myParser.getRequiredGeneralElectives());
+        Header electiveheader = new Header("General Electives", "IP", elect);
+        int[] electivepair = electiveheader.getPair();
         electives.setColor(Color.blue);
-        electives.fillRect(0, 0, 1200 / 14 * 9, 50);
+        electives.fillRect(0, 0, 1200 / electivepair[1] * electivepair[0], 50);
         //                                 total  part
 
         Image uni_req_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);

@@ -14,6 +14,15 @@ public class Header {
         this.requirements = requirements;
     }
 
+
+    public int[] getPair(){
+        int [] ret = new int[2];
+        for(RequirementSection r : requirements){
+            ret[0] += r.getRegisteredCourses().size();
+            ret[1] += r.getNumRequired();
+        }
+        return ret;
+    }
     public String getName() {
         return name;
     }
