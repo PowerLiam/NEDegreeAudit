@@ -19,9 +19,9 @@ import java.util.ArrayList;
  */
 public class ImageBuilder {
     public static Image Summary = new BufferedImage(2100, 10000, BufferedImage.TYPE_INT_BGR);
-    public static Image Major = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
-    public static Image Elective = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
-    public static Image UniReqs = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
+    public static Image Major = new BufferedImage(2100, 10000, BufferedImage.TYPE_INT_BGR);
+    public static Image Elective = new BufferedImage(2100, 10000, BufferedImage.TYPE_INT_BGR);
+    public static Image UniReqs = new BufferedImage(2100, 10000, BufferedImage.TYPE_INT_BGR);
     public static Image StudentInfo = new BufferedImage(2100, 400, BufferedImage.TYPE_INT_BGR);
     public static Image PrintView = new BufferedImage(500, 1000, BufferedImage.TYPE_INT_BGR);
     public static Image currentTabState = new BufferedImage(2100, 100, BufferedImage.TYPE_INT_BGR);
@@ -100,7 +100,7 @@ public class ImageBuilder {
                 break;
             case 1:
                 cur.setColor(Color.RED);
-                cur.drawString(" Summary", 2100 / 4 * 1, 85);
+                cur.drawString(" Summary", 0, 85);
                 cur.drawRect(5, 3, 2100 / 4 * 1, 94);
                 cur.setColor(Color.BLACK);
                 cur.drawRect(2100 / 4 * 1, 3, 2100 / 4 - 5, 94);
@@ -114,9 +114,9 @@ public class ImageBuilder {
                 break;
             case 2:
                 cur.setColor(Color.RED);
-                cur.drawString(" Summary", 2100 / 4 * 1, 85);
+                cur.drawString(" Summary", 0, 85);
                 cur.drawString(" Major", 2100 / 4 * 1, 85);
-                cur.drawRect(5, 3, 2100 / 4 * 1 - 5, 94);
+                cur.drawRect(5, 3, 2100 / 4 * 1, 94);
                 cur.drawRect(2100 / 4, 3, 2100 / 4, 94);
                 cur.setColor(Color.BLACK);
                 cur.drawRect(2100 / 4 * 2, 3, 2100 / 4, 94);
@@ -141,6 +141,15 @@ public class ImageBuilder {
     } //100 height
 
     public static void drawSummary() {
+        ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
+        register.add(new RequirementSection("", "", 0, audit.myParser.getRegisteredCourses(), new ArrayList<String>(1)));
+        Header registered = new Header("Registered Courses", "IP", register);
+        Image rendered = renderHeader(registered);
+        //get total height
+        int totalheight = 1250 + rendered.getHeight(null);
+        Summary = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
+
+
         Graphics2D cur = (Graphics2D) Summary.getGraphics();
         cur.setColor(Color.LIGHT_GRAY);
         cur.fillRect(0, 0, 2100, 2000);
@@ -202,10 +211,7 @@ public class ImageBuilder {
 
 
         //registered courses: starting height 1150
-        ArrayList<RequirementSection> register = new ArrayList<RequirementSection>();
-        register.add(new RequirementSection("", "", 0, audit.myParser.getRegisteredCourses(), new ArrayList<String>(1)));
-        Header registered = new Header("Registered Courses", "IP", register);
-        Image rendered = renderHeader(registered);
+
         cur.drawImage(rendered, 0, 1250, null);
     }
     // All COURSE OBJECTS HAVE BEEN STARTED
@@ -243,50 +249,94 @@ public class ImageBuilder {
             sum += 50; //title
             sum += 100 * r.getRegisteredCourses().size();
             sum += 50 * r.getCourseOptions().size();
-            sum += 50; // spacing btw next section
+            sum += 80; // spacing btw next section
         }
         sum += 90; //title of header
+        sum += 80; //title of header
 
         Image header = new BufferedImage(2200, sum, BufferedImage.TYPE_INT_BGR);
         Graphics2D g = (Graphics2D) header.getGraphics();
         g.setColor(Color.lightGray);
         g.fillRect(0, 0, 2200, sum);
 
+        System.out.println("STATUS: " + h.getStatus());
         if(h.getStatus().equals("")) g.setColor(new Color(200, 129, 39));
-        if(h.getStatus().equals("IP")) g.setColor(new Color(200, 129, 39));
-        if(h.getStatus().equals("NO")) g.setColor(new Color(160, 0, 0));
-        if(h.getStatus().equals("OK")) g.setColor(new Color(62, 183, 72));
+        else if(h.getStatus().equals("IP")) g.setColor(new Color(200, 129, 39));
+        else if(h.getStatus().equals("NO")) g.setColor(new Color(160, 0, 0));
+        else if(h.getStatus().equals("OK")) g.setColor(new Color(62, 183, 72));
+        else g.setColor(new Color(200, 41, 193));
 
 
 
         g.setFont(new Font("Serif", Font.BOLD, 90));
         g.drawString(h.getName(), 10, 90);
         g.setFont(new Font("Serif", Font.BOLD, 50));
-        int offset = 100;
+        int offset = 180;
         for(RequirementSection r : h.getRequirements()){
             g.drawString(r.getTitle() + "  Status: " + r.getStatus(), 30, offset + 50);
             offset += 60;
             for(Course c : r.getRegisteredCourses()){
+                if(c.getDepartment().equals("")) c.setDepartment("     ");
                 g.drawImage(renderCourse(c), 30, offset, null);
                 offset += 100;
             }
             g.setFont(new Font("Serif", Font.BOLD, 50));
             for(String c : r.getCourseOptions()){
                 g.drawString(c, 30, offset + 50);
+                System.out.println("STRINGS: "+ c);
                 offset += 50;
             }
-            offset += 50;
+            offset += 80;
         }
         return header;
     }
 
-    public static void drawMajor(){
-        Graphics2D cur = (Graphics2D) Major.getGraphics();
+    public static void drawMajor() throws Exception {
+        int totalheight = 550;
+        for (Header h : audit.myParser.getHeaders()){
+            totalheight += 100;
+            Image temp = renderHeader(h);
+            int temp_height = temp.getHeight(null);
+            totalheight += temp_height;
+        }
+        Major = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
 
+        Graphics2D cur = (Graphics2D) Major.getGraphics();
+        cur.setColor(Color.LIGHT_GRAY);
+        cur.fillRect(0, 0, 2100, 2000);
+        drawTabs(1);
+        drawStuInfo();
+        cur.drawImage(StudentInfo, 0, 0, null);
+        cur.drawImage(currentTabState, 0, 450, null);
+        int offset = 550;
+
+        for (Header h : audit.myParser.getHeaders()){
+            cur.fillRect(0, offset, 2100, 100);
+            offset += 100;
+            Image temp = renderHeader(h);
+            int temp_height = temp.getHeight(null);
+            cur.drawImage(temp, 0, offset, null);
+            offset += temp_height;
+        }
     }
 
-    public static void drawElectives(){
+    public static void drawElectives () throws Exception {
+        ArrayList<RequirementSection> elect = new ArrayList<RequirementSection>();
+        elect.add(new RequirementSection("General Electives", "", 0, audit.myParser.getGeneralElectives(), new ArrayList<String>(1)));
+        Header electives = new Header("General Electives", "IP", elect);
+        Image rendered = renderHeader(electives);
+        //get total height
+        int totalheight = 1250 + rendered.getHeight(null);
+        Elective = new BufferedImage(2100, totalheight, BufferedImage.TYPE_INT_BGR);
+
         Graphics2D cur = (Graphics2D) Elective.getGraphics();
+        cur.setColor(Color.LIGHT_GRAY);
+        cur.fillRect(0, 0, 2100, 2000);
+        drawTabs(2);
+        drawStuInfo();
+        cur.drawImage(StudentInfo, 0, 0, null);
+        cur.drawImage(currentTabState, 0, 450, null);
+        cur.drawImage(rendered, 0, 550, null);
 
     }
 

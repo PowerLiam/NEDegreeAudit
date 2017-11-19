@@ -55,6 +55,9 @@ public class Course {
         return name;
     }
 
+    public void setDepartment(String s){
+        department = s;
+    }
     @Override
     public String toString() {
         return "\nCourse{" +
