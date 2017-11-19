@@ -91,16 +91,24 @@ public class AuditParser {
         }
     }
 
-    public ArrayList<Course> getRegisteredCourses() {
+    public RequirementSection getRegisteredCourses() {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().contains("THE FOLLOWING COURSES ARE CURRENT REGISTERED"));
-        return parseRegisteredCourses(previewTexts.get(0).parent().parent());
+        return getRequirementSection(previewTexts.get(0).parent().parent().children().get(0).children().get(0));
     }
 
-    public ArrayList<Course> getGeneralElectives() {
+    public RequirementSection getGeneralElectives() {
         Elements previewTexts = document.getElementsByClass("auditPreviewText");
         previewTexts.removeIf((element) -> !element.ownText().equals("GENERAL ELECTIVES"));
-        return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling());
+        //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling().nextElementSibling());
+        return getRequirementSection(previewTexts.get(1).parent().nextElementSibling().nextElementSibling().children().get(0).children().get(0));
+    }
+
+    public RequirementSection getRequiredGeneralElectives() {
+        Elements previewTexts = document.getElementsByClass("auditPreviewText");
+        previewTexts.removeIf((element) -> !element.ownText().contains("REQUIRED GENERAL ELECTIVES"));
+        //return parseRegisteredCourses(previewTexts.get(1).parent().nextElementSibling());
+        return getRequirementSection(previewTexts.get(1).parent().nextElementSibling().children().get(0).children().get(0));
     }
 
     private Course parseCourse(String text) {
@@ -128,6 +136,7 @@ public class AuditParser {
         }
         return courses;
     }
+
 
     public RequirementSection getRequirementSection(Element headerElem) {
         String headerText = headerElem.textNodes().get(0).getWholeText();
