@@ -57,15 +57,22 @@ public class ImageBuilder {
         cur.drawString(" Degree: " + audit.info.getDegree(), 0, 270);
         cur.drawString(" " + audit.info.getFocus_type() + ": " + audit.info.getFocus(), 0, 330);
 
-        Image hours_bar = new BufferedImage(1200, 50, BufferedImage.TYPE_INT_BGR);
+        Image hours_bar = new BufferedImage(1600, 50, BufferedImage.TYPE_INT_BGR);
         Graphics2D hours = (Graphics2D) hours_bar.getGraphics();
         hours.setColor(Color.gray);
         hours.fillRect(0, 0, 1200, 50);
+        hours.setColor(Color.lightGray);
+        hours.fillRect(1200, 0, 400, 50);
         //TODO: GET WIDTH MULTIPLIER FROM AUDIT
+        int[] mainpair = audit.myParser.getTotalHours();
         hours.setColor(Color.blue);
         hours.setStroke(new BasicStroke(5));
         hours.drawRect(0, 0, 1200, 50);
-        hours.fillRect(0, 0, 1200 / 14 * 9, 50);
+        hours.fillRect(0, 0, 1200 / mainpair[1] * mainpair[0], 50);
+
+        hours.setFont(new Font("Serif", Font.BOLD, 50));
+        hours.setColor(Color.red);
+        hours.drawString( "(" + mainpair[0] + "/" + mainpair[1] + ")", 1250, 40);
         //                                 total  part
 
         cur.drawImage(hours_bar, 50, 350, null);
@@ -295,8 +302,9 @@ public class ImageBuilder {
             else if(r.getStatus().equals("IP")) g.setColor(new Color(200, 129, 39));
             else if(r.getStatus().equals("IP+")) g.setColor(new Color(78, 106, 11));
             else if(r.getStatus().equals("-")) g.setColor(new Color(177, 16, 32));
-            else g.setColor(Color.lightGray);
-            if(r.getStatus().equals("")) g.fillRect(30, offset + 60, 2300, 50);
+            else g.setColor(new Color(8, 183, 0));
+
+            if(r.getStatus().equals("")) g.drawString(r.getTitle(), 20, offset + 50);
             else g.drawString(r.getTitle() + "  Status: " + r.getStatus(), 30, offset + 50);
 
             offset += 60;
