@@ -12,7 +12,7 @@ public class Main {
             AuditParser parser = new AuditParser();
             parser.setDocument("res/NickAudit.html");
             System.out.println("Headers");
-            parser.getHeaders();
+            parser.getUniversityRequirements();
             //System.out.println("Headers end");
             Audit myAudit = new Audit();
             myAudit.info = parser.getStudentInfo();

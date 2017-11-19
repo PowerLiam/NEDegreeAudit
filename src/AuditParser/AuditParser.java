@@ -58,7 +58,7 @@ public class AuditParser {
         return headers;
     }
 
-    public ArrayList<Header> getUniversityRequirementss() {
+    public Header getUniversityRequirements() {
         String[] names = {
                 "NATURAL and DESIGNED WORLD (ND)",
                 "CREATIVE EXPRESSION/INNOVATION (EI)",
@@ -72,10 +72,20 @@ public class AuditParser {
                 "WRITING INTENSIVE (WI)",
                 "ADVANCED WRITING IN THE DISCIPLINES (WD)",
                 "INTEGRATION EXPERIENCE (EX)",
-                "CAPSTONE EXPERIENCE (CE)",
+                "CAPSTONE EXPERIENCE (CE)"
         };
-
-        return null;
+        ArrayList<RequirementSection> reqs = new ArrayList<>();
+        for (int ii = 0; ii < names.length; ii++) {
+            Elements previewTexts = document.getElementsByClass("auditPreviewText");
+            final int index = ii;
+            previewTexts.removeIf((element) -> !element.ownText().contains(names[index]));
+            reqs.add(getRequirementSection(previewTexts.get(0)));
+        }
+        return new Header(
+                "University Requirements",
+                "",
+                reqs
+        );
     }
 
     private Header parseHeader(Element headerRoot) {
@@ -152,7 +162,10 @@ public class AuditParser {
         children.removeIf((element) -> (element.children().size() > 0)); // remove nodes w/ more than one child
         ArrayList<Course> courses = new ArrayList();
         for (Element element : children) {
-            courses.add(parseCourse(element.textNodes().get(0).getWholeText()));
+            Course course = parseCourse(element.textNodes().get(0).getWholeText());
+            if (!course.getDepartment().equals("")) { // avoids weird courses that don't "count"
+                courses.add(course);
+            }
         }
         return courses;
     }
